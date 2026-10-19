@@ -1,0 +1,4 @@
+﻿.serverless/
+vendor/
+.env
+.DS_Store

@@ -1,0 +1,33 @@
+service: php-payroll-api-toledano
+
+provider:
+  name: aws
+  runtime: php-82-fpm
+  region: us-east-1
+  environment:
+    S3_BUCKET: payroll-payslips-sam10-toledano
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:ListBucket
+          Resource:
+            - "arn:aws:s3:::payroll-payslips-sam10-toledano"
+            - "arn:aws:s3:::payroll-payslips-sam10-toledano/*"
+
+plugins:
+  - ./vendor/bref/bref
+
+functions:
+  api:
+    handler: index.php
+    events:
+      - httpApi:
+          path: /{proxy+}
+          method: '*'
+      - httpApi:
+          path: /
+          method: '*'
